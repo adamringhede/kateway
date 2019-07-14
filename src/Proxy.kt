@@ -16,6 +16,7 @@ import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.http.content.OutgoingContent
 import io.ktor.jackson.jackson
+import io.ktor.request.authorization
 import io.ktor.request.httpMethod
 import io.ktor.request.uri
 import io.ktor.response.respond
@@ -37,16 +38,17 @@ fun Application.proxyModule(testing: Boolean = false, servicesRepo: ServicesRepo
     addPlugin(CompressionPlugin())
     addPlugin(CorsPlugin())
 
+    val serviceResolver = ServiceResolver(servicesRepo)
+
     val client = HttpClient()
     intercept(ApplicationCallPipeline.Call) {
-        // TODO making a database request on each query is inefficient. it should be cached in memory.
-        val services = servicesRepo.findAll()
-        val service = services.find { call.request.uri.startsWith(it.path, true) }
+        val service = serviceResolver.find(call.request.uri)
         val target = service?.targets?.firstOrNull()
 
         if (service != null && target != null) {
             val requestBuilder = HttpRequestBuilder().apply {
                 url.takeFrom(target.url)
+                url.parameters.appendAll(call.request.queryParameters)
                 method = call.request.httpMethod
                 headers.appendAll(call.request.headers)
                 //body = call.request.receiveChannel()
