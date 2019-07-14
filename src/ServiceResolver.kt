@@ -18,7 +18,7 @@ class ServiceResolver(private val servicesRepo: ServicesRepo) {
     }
 
     fun find(uri: String): Service? {
-        return services.find { uri.startsWith(it.path, true) }
+        return services.find { it.active && uri.startsWith(it.path, true) }
     }
 
 }

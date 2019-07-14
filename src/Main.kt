@@ -1,6 +1,7 @@
 package com.adamringhede.kateway
 
 import com.adamringhede.kateway.storage.EtcdServicesRepo
+import com.adamringhede.kateway.storage.MockServicesRepo
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -16,8 +17,10 @@ import io.ktor.server.netty.Netty
 
 fun main(args: Array<String>): Unit {
 
-    val etcdClient = Client.builder().endpoints("http://localhost:2379").build()
-    val servicesRepo = EtcdServicesRepo(etcdClient)
+    // TODO Etcd URL should be configurable
+    //val etcdClient = Client.builder().endpoints("http://localhost:2379").build()
+    //val servicesRepo = EtcdServicesRepo(etcdClient)
+    val servicesRepo = MockServicesRepo()
 
     // TODO ports should be configurable
     embeddedServer(Netty, 8081) {
