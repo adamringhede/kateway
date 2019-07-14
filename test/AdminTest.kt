@@ -1,21 +1,7 @@
 package com.adamringhede.apigateway
 
-import com.fasterxml.jackson.core.type.TypeReference
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.features.*
-import io.ktor.routing.*
+
 import io.ktor.http.*
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.ktor.jackson.*
-import io.ktor.client.*
-import io.ktor.client.engine.jetty.*
-import io.ktor.client.features.json.*
-import io.ktor.client.request.*
-import java.net.URL
-import kotlinx.coroutines.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -23,7 +9,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 
 
 
-class ApplicationTest {
+class AdminTest {
 
     @Test
     fun `test add service`() {
@@ -52,13 +38,13 @@ class ApplicationTest {
     }
 
     private fun get(uri: String): TestApplicationCall {
-        return withTestApplication({ module(testing = true) }) {
+        return withTestApplication({ adminModule(testing = true) }) {
             handleRequest(HttpMethod.Get, uri)
         }
     }
 
     private fun post(uri: String, body: String): TestApplicationCall {
-        return withTestApplication({ module(testing = true) }) {
+        return withTestApplication({ adminModule(testing = true) }) {
             handleRequest(HttpMethod.Post, uri) {
                 addHeader("Content-Type", "application/json")
                 setBody(body)
