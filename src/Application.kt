@@ -16,17 +16,16 @@ import io.ktor.server.netty.Netty
 
 fun main(args: Array<String>): Unit {
 
+    val etcdClient = Client.builder().endpoints("http://localhost:2379").build()
+    val servicesRepo = EtcdServicesRepo(etcdClient)
+
     // TODO ports should be configurable
     embeddedServer(Netty, 8081) {
-        adminModule()
+        adminModule(servicesRepo = servicesRepo)
     }.start(wait = false)
 
     embeddedServer(Netty, 8080) {
-        proxyModule()
+        proxyModule(servicesRepo = servicesRepo)
     }.start(wait = true)
 
 }
-
-// TODO replace with dependency injection
-private val etcdClient = Client.builder().endpoints("http://localhost:2379").build()
-val servicesRepo = EtcdServicesRepo(etcdClient)

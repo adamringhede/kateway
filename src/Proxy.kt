@@ -1,5 +1,6 @@
 package com.adamringhede.apigateway
 
+import com.adamringhede.apigateway.storage.ServicesRepo
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
@@ -27,7 +28,7 @@ import kotlinx.coroutines.io.copyAndClose
 import org.eclipse.jetty.http.HttpStatus
 
 
-fun Application.proxyModule(testing: Boolean = false) {
+fun Application.proxyModule(testing: Boolean = false, servicesRepo: ServicesRepo) {
     // TODO Compression should be added as a plugin
     install(Compression) {
         gzip {

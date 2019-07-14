@@ -1,7 +1,6 @@
 package com.adamringhede.apigateway
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.adamringhede.apigateway.storage.MockServicesRepo
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.TestApplicationCall
@@ -13,6 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ProxyTest {
+    private val servicesRepo = MockServicesRepo()
 
     @Test
     fun `test proxy request`() {
@@ -33,13 +33,13 @@ class ProxyTest {
     }
 
     private fun get(uri: String): TestApplicationCall {
-        return withTestApplication({ proxyModule(testing = true) }) {
+        return withTestApplication({ proxyModule(testing = true, servicesRepo = servicesRepo) }) {
             handleRequest(HttpMethod.Get, uri)
         }
     }
 
     private fun post(uri: String, body: String): TestApplicationCall {
-        return withTestApplication({ proxyModule(testing = true) }) {
+        return withTestApplication({ proxyModule(testing = true, servicesRepo = servicesRepo) }) {
             handleRequest(HttpMethod.Post, uri) {
                 addHeader("Content-Type", "application/json")
                 setBody(body)

@@ -1,5 +1,6 @@
 package com.adamringhede.apigateway
 
+import com.adamringhede.apigateway.storage.ServicesRepo
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.ktor.application.Application
@@ -18,7 +19,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
 
-fun Application.adminModule(testing: Boolean = false) {
+fun Application.adminModule(testing: Boolean = false, servicesRepo: ServicesRepo) {
     install(Compression) {
         gzip {
             priority = 1.0

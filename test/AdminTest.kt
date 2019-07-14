@@ -1,6 +1,7 @@
 package com.adamringhede.apigateway
 
 
+import com.adamringhede.apigateway.storage.MockServicesRepo
 import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 
 
 class AdminTest {
+    private val servicesRepo = MockServicesRepo()
 
     @Test
     fun `test add service`() {
@@ -38,13 +40,13 @@ class AdminTest {
     }
 
     private fun get(uri: String): TestApplicationCall {
-        return withTestApplication({ adminModule(testing = true) }) {
+        return withTestApplication({ adminModule(testing = true, servicesRepo = servicesRepo) }) {
             handleRequest(HttpMethod.Get, uri)
         }
     }
 
     private fun post(uri: String, body: String): TestApplicationCall {
-        return withTestApplication({ adminModule(testing = true) }) {
+        return withTestApplication({ adminModule(testing = true, servicesRepo = servicesRepo) }) {
             handleRequest(HttpMethod.Post, uri) {
                 addHeader("Content-Type", "application/json")
                 setBody(body)

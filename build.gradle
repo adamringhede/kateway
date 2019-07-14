@@ -25,7 +25,14 @@ sourceSets {
 compileKotlin {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
+compileTestKotlin {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -51,5 +58,6 @@ dependencies {
     compile "io.ktor:ktor-client-gson:$ktor_version"
     testCompile "io.ktor:ktor-server-tests:$ktor_version"
     compile "io.etcd:jetcd-core:$jetcd_version"
-
+    compile 'org.koin:koin-core:2.0.1'
+    testCompile 'org.koin:koin-test:2.0.1'
 }
