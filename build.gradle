@@ -13,7 +13,7 @@ apply plugin: 'application'
 
 group 'apigateway'
 version '0.0.1'
-mainClassName = "io.ktor.server.netty.EngineMain"
+mainClassName = "MainKt"
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
@@ -38,6 +38,13 @@ compileTestKotlin {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.adamringhede.apigateway.MainKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 repositories {
     mavenLocal()
     jcenter()
@@ -53,7 +60,7 @@ dependencies {
     compile "io.ktor:ktor-jackson:$ktor_version"
     compile "io.ktor:ktor-client-core:$ktor_version"
     compile "io.ktor:ktor-client-core-jvm:$ktor_version"
-    compile "io.ktor:ktor-client-jetty:$ktor_version"
+    compile "io.ktor:ktor-client-apache:$ktor_version"
     compile "io.ktor:ktor-client-json-jvm:$ktor_version"
     compile "io.ktor:ktor-client-gson:$ktor_version"
     testCompile "io.ktor:ktor-server-tests:$ktor_version"

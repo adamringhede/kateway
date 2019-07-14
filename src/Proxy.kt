@@ -10,6 +10,7 @@ import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.features.*
@@ -29,7 +30,6 @@ import io.ktor.util.filter
 import io.ktor.util.toMap
 import kotlinx.coroutines.io.ByteWriteChannel
 import kotlinx.coroutines.io.copyAndClose
-import org.eclipse.jetty.http.HttpStatus
 
 fun Application.addPlugin(plugin: Plugin) = plugin.setup(this)
 
@@ -40,7 +40,8 @@ fun Application.proxyModule(testing: Boolean = false, servicesRepo: ServicesRepo
 
     val serviceResolver = ServiceResolver(servicesRepo)
 
-    val client = HttpClient()
+    val client= HttpClient(Apache)
+
     intercept(ApplicationCallPipeline.Call) {
         val service = serviceResolver.find(call.request.uri)
         val target = service?.targets?.firstOrNull()
