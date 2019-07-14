@@ -1,5 +1,8 @@
 package com.adamringhede.apigateway
 
+import com.adamringhede.apigateway.plugins.CompressionPlugin
+import com.adamringhede.apigateway.plugins.CorsPlugin
+import com.adamringhede.apigateway.plugins.Plugin
 import com.adamringhede.apigateway.storage.ServicesRepo
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
@@ -27,38 +30,13 @@ import kotlinx.coroutines.io.ByteWriteChannel
 import kotlinx.coroutines.io.copyAndClose
 import org.eclipse.jetty.http.HttpStatus
 
+fun Application.addPlugin(plugin: Plugin) = plugin.setup(this)
 
 fun Application.proxyModule(testing: Boolean = false, servicesRepo: ServicesRepo) {
-    // TODO Compression should be added as a plugin
-    install(Compression) {
-        gzip {
-            priority = 1.0
-        }
-        deflate {
-            priority = 10.0
-            minimumSize(1024) // condition
-        }
-    }
 
-    // TODO CORS should be added as a plugin
-    install(CORS) {
-        method(HttpMethod.Options)
-        method(HttpMethod.Put)
-        method(HttpMethod.Delete)
-        method(HttpMethod.Patch)
-        header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
-        allowCredentials = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
-    }
+    addPlugin(CompressionPlugin())
+    addPlugin(CorsPlugin())
 
-    install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
-        }
-    }
-
-    // TOOD Will using a single client be bad for performance?
     val client = HttpClient()
     intercept(ApplicationCallPipeline.Call) {
         // TODO making a database request on each query is inefficient. it should be cached in memory.
