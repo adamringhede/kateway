@@ -12,4 +12,4 @@ EXPOSE 8081
 COPY --from=builder /home/gradle/src/build/libs/kateway-0.0.1.jar /app/
 WORKDIR /app
 
-CMD java -jar /app/kateway-0.0.1.jar
+ENTRYPOINT java -jar /app/kateway-0.0.1.jar
