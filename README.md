@@ -1,6 +1,6 @@
 # Kateway
 
-Kateway is an API gateway solution hosting HTTP services behind. The objective is to be easy to use and extensible.
+Kateway is a gateway service to redirect network traffic to microservices while also adding additional features necessary for reliable production deployments.  
 
 ## Quickstart
 Build it using gradle to create a fat jar with all dependencies. 
