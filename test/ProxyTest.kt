@@ -15,12 +15,20 @@ import kotlin.test.assertTrue
 class ProxyTest {
 
     @Test
-    fun `test list services`() {
+    fun `test proxy request`() {
         servicesRepo.removeAll()
         servicesRepo.insert(Service("wikipedia", path = "/wikipedia", targets = listOf(ServiceTarget("https://www.wikipedia.org"))))
         get("/wikipedia").apply {
             assertEquals(HttpStatusCode.OK, response.status())
             assertTrue("<title>Wikipedia</title>" in response.content!!)
+        }
+    }
+
+    @Test
+    fun `test proxy request not found`() {
+        servicesRepo.removeAll()
+        get("/not-found").apply {
+            assertEquals(HttpStatusCode.NotFound, response.status())
         }
     }
 
