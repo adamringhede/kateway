@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway.storage
+package com.adamringhede.kateway.storage
 
-import com.adamringhede.apigateway.Service
+import com.adamringhede.kateway.Service
 
 class MockServicesRepo : ServicesRepo {
     private val services = mutableMapOf<String, Service>()

@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
-import com.adamringhede.apigateway.storage.ServicesRepo
+import com.adamringhede.kateway.storage.ServicesRepo
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.ktor.application.Application

@@ -1,4 +1,4 @@
-package com.adamringhede.apigateway.plugins
+package com.adamringhede.kateway.plugins
 
 import io.ktor.application.Application
 

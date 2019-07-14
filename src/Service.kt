@@ -1,4 +1,4 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
 data class Service(
     val name: String,

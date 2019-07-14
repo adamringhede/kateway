@@ -7,7 +7,7 @@ Build it using gradle to create a fat jar with all dependencies.
 
 ```bash
 gradle build
-java -jar build/lib/apigateway-0.0.1.jar
+java -jar build/lib/kateway-0.0.1.jar
 ```
 
 ### Add a service
@@ -18,5 +18,5 @@ java -jar build/lib/apigateway-0.0.1.jar
 ```
 
 ```bash
-curl -XPOST http://localhost:8081/services -H "Content-Type: text/xml" --data "@example-service.json" 
+curl -XPOST http://localhost:8081/services -H "Content-Type: application/json" --data "@example-service.json" 
 ```

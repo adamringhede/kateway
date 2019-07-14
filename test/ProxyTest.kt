@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
-import com.adamringhede.apigateway.storage.MockServicesRepo
+import com.adamringhede.kateway.storage.MockServicesRepo
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.TestApplicationCall

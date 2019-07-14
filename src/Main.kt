@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
-import com.adamringhede.apigateway.storage.EtcdServicesRepo
+import com.adamringhede.kateway.storage.EtcdServicesRepo
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*

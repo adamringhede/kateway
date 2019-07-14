@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
-group 'apigateway'
+group 'kateway'
 version '0.0.1'
 mainClassName = "MainKt"
 
@@ -40,7 +40,7 @@ compileTestKotlin {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.adamringhede.apigateway.MainKt'
+        attributes 'Main-Class': 'com.adamringhede.kateway.MainKt'
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }

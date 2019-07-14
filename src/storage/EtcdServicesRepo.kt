@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway.storage
+package com.adamringhede.kateway.storage
 
-import com.adamringhede.apigateway.Service
+import com.adamringhede.kateway.Service
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule

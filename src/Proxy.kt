@@ -1,9 +1,9 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
-import com.adamringhede.apigateway.plugins.CompressionPlugin
-import com.adamringhede.apigateway.plugins.CorsPlugin
-import com.adamringhede.apigateway.plugins.Plugin
-import com.adamringhede.apigateway.storage.ServicesRepo
+import com.adamringhede.kateway.plugins.CompressionPlugin
+import com.adamringhede.kateway.plugins.CorsPlugin
+import com.adamringhede.kateway.plugins.Plugin
+import com.adamringhede.kateway.storage.ServicesRepo
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call

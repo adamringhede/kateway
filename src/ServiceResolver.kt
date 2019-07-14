@@ -1,6 +1,6 @@
-package com.adamringhede.apigateway
+package com.adamringhede.kateway
 
-import com.adamringhede.apigateway.storage.ServicesRepo
+import com.adamringhede.kateway.storage.ServicesRepo
 import java.util.*
 import kotlin.concurrent.timerTask
 
