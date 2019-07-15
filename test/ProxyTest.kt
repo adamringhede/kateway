@@ -1,18 +1,20 @@
 package com.adamringhede.kateway
 
+import com.adamringhede.kateway.helpers.ApiTest
 import com.adamringhede.kateway.storage.MockServicesRepo
-import io.ktor.http.HttpMethod
+import io.ktor.application.Application
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.TestApplicationCall
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.ktor.server.testing.withTestApplication
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ProxyTest {
+
+class ProxyTest : ApiTest() {
     private val servicesRepo = MockServicesRepo()
+
+    override fun setupModule(app: Application) {
+        app.proxyModule(testing = true, servicesRepo = servicesRepo)
+    }
 
     @Test
     fun `test proxy request`() {
@@ -32,20 +34,4 @@ class ProxyTest {
         }
     }
 
-    private fun get(uri: String): TestApplicationCall {
-        return withTestApplication({ proxyModule(testing = true, servicesRepo = servicesRepo) }) {
-            handleRequest(HttpMethod.Get, uri)
-        }
-    }
-
-    private fun post(uri: String, body: String): TestApplicationCall {
-        return withTestApplication({ proxyModule(testing = true, servicesRepo = servicesRepo) }) {
-            handleRequest(HttpMethod.Post, uri) {
-                addHeader("Content-Type", "application/json")
-                setBody(body)
-            }
-        }
-    }
-
 }
-
