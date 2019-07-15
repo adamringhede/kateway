@@ -39,9 +39,25 @@ class AdminTest {
         }
     }
 
+    @Test
+    fun `test remove service`() {
+        servicesRepo.removeAll()
+        servicesRepo.insert(Service("example", path = "/example", targets = emptyList()))
+        delete("/services/example").apply {
+            assertEquals(HttpStatusCode.OK, response.status())
+            assertEquals(0, servicesRepo.findAll().size)
+        }
+    }
+
     private fun get(uri: String): TestApplicationCall {
         return withTestApplication({ adminModule(testing = true, servicesRepo = servicesRepo) }) {
             handleRequest(HttpMethod.Get, uri)
+        }
+    }
+
+    private fun delete(uri: String): TestApplicationCall {
+        return withTestApplication({ adminModule(testing = true, servicesRepo = servicesRepo) }) {
+            handleRequest(HttpMethod.Delete, uri)
         }
     }
 

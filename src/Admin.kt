@@ -15,6 +15,7 @@ import io.ktor.jackson.jackson
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
+import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
@@ -58,6 +59,16 @@ fun Application.adminModule(testing: Boolean = false, servicesRepo: ServicesRepo
 
         get("/services") {
             call.respond(servicesRepo.findAll())
+        }
+
+        delete("/services/{name}") {
+            val service = servicesRepo.findAll().find { it.name == call.parameters["name"] }
+            if (service == null) {
+                call.respondText("Could not find service", status = HttpStatusCode.NotFound)
+            } else {
+                servicesRepo.remove(service.name)
+                call.respondText("Removed service")
+            }
         }
     }
 }

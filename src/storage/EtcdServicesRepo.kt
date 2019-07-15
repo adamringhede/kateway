@@ -33,6 +33,10 @@ class EtcdServicesRepo(private val client: Client) : ServicesRepo {
         client.kvClient.delete(key(""), withDeletePrefix("services")).get()
     }
 
+    override fun remove(name: String) {
+        client.kvClient.delete(key("services.$name")).get()
+    }
+
     private fun key(path: String) =
         ByteSequence.from("kateway.$path", charset)
 

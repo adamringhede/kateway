@@ -13,6 +13,10 @@ class MockServicesRepo : ServicesRepo {
         services[service.name] = service
     }
 
+    override fun remove(name: String) {
+        services.remove(name)
+    }
+
     override fun removeAll() {
         services.clear()
     }
