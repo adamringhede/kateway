@@ -20,3 +20,7 @@ java -jar build/lib/kateway-0.0.1.jar
 ```bash
 curl -XPOST http://localhost:8081/services -H "Content-Type: application/json" --data "@example-service.json" 
 ```
+
+## Modify
+### Request Authentication plugin
+To authenticate requests before they are proxied, a request authenticator implementation must be supplied.  
