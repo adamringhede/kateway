@@ -3,15 +3,13 @@ package com.adamringhede.kateway
 import com.adamringhede.kateway.storage.ServicesRepo
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
+import io.ktor.request.header
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
@@ -19,8 +17,13 @@ import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
+import io.ktor.util.pipeline.PipelinePhase
+import io.ktor.application.ApplicationCallPipeline.ApplicationPhase as ApplicationPhase
 
-fun Application.adminModule(testing: Boolean = false, servicesRepo: ServicesRepo) {
+fun Application.adminModule(
+    servicesRepo: ServicesRepo,
+    adminAuthenticator: AdminAuthenticator = NoAdminAuthenticator()) {
+
     install(Compression) {
         gzip {
             priority = 1.0
@@ -37,14 +40,21 @@ fun Application.adminModule(testing: Boolean = false, servicesRepo: ServicesRepo
         method(HttpMethod.Delete)
         method(HttpMethod.Patch)
         header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
         allowCredentials = true
-        anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
+        anyHost()
     }
 
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
+        }
+    }
+
+    intercept(ApplicationPhase.Call) {
+        val token = call.request.header(HttpHeaders.Authorization)
+        if (!adminAuthenticator.test(token)) {
+            call.respond(HttpStatusCode.Unauthorized, "Invalid token")
+            this.finish()
         }
     }
 

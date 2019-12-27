@@ -13,3 +13,4 @@ services:
       - "8081:8081"
     environment:
       - KATEWAY_ETCD_ENDPOINTS=http://etcd:2379
+      - KATEWAY_ADMIN_TOKEN=secret

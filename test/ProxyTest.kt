@@ -13,16 +13,28 @@ class ProxyTest : ApiTest() {
     private val servicesRepo = MockServicesRepo()
 
     override fun setupModule(app: Application) {
-        app.proxyModule(testing = true, servicesRepo = servicesRepo)
+        app.proxyModule(
+            servicesRepo = servicesRepo,
+            requestAuthenticator = MockRequestAuthenticator()
+        )
     }
 
     @Test
     fun `test proxy request`() {
         servicesRepo.removeAll()
-        servicesRepo.insert(Service("wikipedia", path = "/wikipedia", targets = listOf(ServiceTarget("https://www.wikipedia.org"))))
+        servicesRepo.insert(Service("wikipedia", path = "/wikipedia", public = true, targets = listOf(ServiceTarget("https://www.wikipedia.org"))))
         get("/wikipedia").apply {
             assertEquals(HttpStatusCode.OK, response.status())
-            assertTrue("<title>Wikipedia</title>" in response.content!!)
+            assertTrue("<title>Wikipedia" in response.content!!)
+        }
+    }
+
+    @Test
+    fun `test proxy post request`() {
+        servicesRepo.removeAll()
+        servicesRepo.insert(Service("dev/null", path = "/dev/null", public = true,  targets = listOf(ServiceTarget("http://devnull-as-a-service.com/dev/null"))))
+        post("/dev/null", """{"msg": "Hello World"}""").apply {
+            assertEquals(HttpStatusCode.OK, response.status())
         }
     }
 

@@ -14,7 +14,7 @@ class AdminTest : ApiTest() {
     private val servicesRepo = MockServicesRepo()
 
     override fun setupModule(app: Application) {
-        app.adminModule(testing = true, servicesRepo = servicesRepo)
+        app.adminModule(servicesRepo = servicesRepo)
     }
 
     @Test
@@ -36,7 +36,7 @@ class AdminTest : ApiTest() {
         servicesRepo.removeAll()
         servicesRepo.insert(Service("example", path = "/example", targets = listOf(ServiceTarget("http://example.com:8080"))))
         servicesRepo.insert(Service("example2", path = "/example2", targets = emptyList()))
-        get("/services").apply {
+        get("/services").run {
             assertEquals(HttpStatusCode.OK, response.status())
             val services = jacksonObjectMapper().readValue<List<Service>>(response.content!!)
             assertEquals(2, services.size)
